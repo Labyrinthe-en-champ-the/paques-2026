@@ -1,267 +1,160 @@
+/* --- STYLE PÂQUES AU LABYRINTHE EN-CHAMP-THÉ --- */
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap');
 
 :root {
     --sage: #8bab96;
     --cream: #fdfbf7;
-    --soft-blue: #d4eaf7;
-    --soft-yellow: #fff9c4;
+    --blue: #d4eaf7;
     --text: #4a4a4a;
 }
 
 body {
     font-family: 'Quicksand', sans-serif;
     background-color: var(--cream);
-    background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png'); /* Texture papier */
+    background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
     color: var(--text);
     margin: 0;
-    padding: 20px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-h1 {
-    color: var(--sage);
-    font-size: 1.6rem;
-    margin-bottom: 5px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
+h1 { color: var(--sage); font-size: 1.5rem; margin-bottom: 5px; text-transform: uppercase; }
+.subtitle { font-size: 0.8rem; color: #999; margin-bottom: 15px; }
 
-.subtitle {
-    font-size: 0.85rem;
-    color: #999;
-    margin-bottom: 20px;
-}
-
-/* Grille */
+/* --- GRILLE DE JEU (PORTRAIT 3x4) --- */
 .game-board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(4, 1fr);
-    gap: 10px;
+    gap: 8px;
     width: 100%;
     max-width: 350px;
     aspect-ratio: 3/4;
     background: white;
-    padding: 12px;
-    border-radius: 25px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+    transition: all 0.5s ease;
 }
 
 .station {
-    border-radius: 15px;
+    border-radius: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: 600;
-    transition: 0.3s;
     cursor: pointer;
-    font-size: 1.1rem;
+    transition: 0.3s;
 }
 
-.station.locked {
-    background-color: #eee;
-    color: #ccc;
-}
+/* ÉTATS DES CASES */
+.station.locked { background: #eee; color: #ccc; }
+.station.active { background: var(--blue); color: #5b8fb3; border: 2px dashed #5b8fb3; }
+.station.failed { background: #e0e0e0; color: #999; }
 
-.station.active {
-    background-color: var(--soft-blue);
-    color: #5b8fb3;
-    border: 2px dashed #5b8fb3;
-}
-
+/* RÉVÉLATION DE L'IMAGE (3 colonnes x 4 lignes) */
 .station.unlocked {
     background-image: url('image_2.png');
-    background-size: 300% 400%;
+    background-size: 300% 400%; /* L'image fait 3 fois la largeur et 4 fois la hauteur d'une case */
     color: transparent;
 }
 
-/* Modal / Carte Question */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(139, 171, 150, 0.2); /* Teinte sauge transparente */
-    backdrop-filter: blur(8px);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
+/* POSITIONS PRÉCISES DES PORTIONS D'IMAGE */
+.station-1 { background-position: 0% 0%; }
+.station-2 { background-position: 50% 0%; }
+.station-3 { background-position: 100% 0%; }
+.station-4 { background-position: 0% 33.33%; }
+.station-5 { background-position: 50% 33.33%; }
+.station-6 { background-position: 100% 33.33%; }
+.station-7 { background-position: 0% 66.66%; }
+.station-8 { background-position: 50% 66.66%; }
+.station-9 { background-position: 100% 66.66%; }
+.station-10 { background-position: 0% 100%; }
+.station-11 { background-position: 50% 100%; }
+.station-12 { background-position: 100% 100%; }
+
+/* --- MODE FINAL (IMAGE HORIZONTALE) --- */
+.horizontal-final {
+    grid-template-columns: repeat(4, 1fr) !important;
+    grid-template-rows: 1fr !important;
+    aspect-ratio: 16/9 !important;
+    max-width: 500px !important;
+    background-size: cover !important;
+    background-position: center !important;
 }
 
-.modal.open { display: flex; }
-
-.modal-content {
-    background: white;
-    width: 90%;
-    max-width: 380px;
-    padding: 25px;
-    border-radius: 30px;
-    text-align: center;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-    border: 3px solid var(--soft-yellow);
-}
-
-#question-difficulty {
-    display: inline-block;
-    background: var(--soft-blue);
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    margin-bottom: 15px;
-    font-weight: 600;
-}
-
-#question-text {
-    font-size: 1.1rem;
-    line-height: 1.5;
-    margin-bottom: 20px;
-}
-
-.life-counter {
-    font-size: 0.8rem;
-    color: #aaa;
-    margin-bottom: 15px;
-}
-
-input[type="text"] {
-    width: 100%;
-    border: 2px solid #eee;
-    padding: 12px;
-    border-radius: 15px;
-    margin-bottom: 15px;
-    font-family: inherit;
-    font-size: 1rem;
-    text-align: center;
-}
-
-.submit-btn {
-    background: var(--sage);
-    color: white;
-    border: none;
-    padding: 14px;
-    width: 100%;
-    border-radius: 15px;
-    font-weight: 600;
-    font-size: 1rem;
-    box-shadow: 0 4px 0 #6e8a78;
-    cursor: pointer;
-}
-
-.submit-btn:active {
-    box-shadow: none;
-    transform: translateY(4px);
-}
-
-.option-btn {
-    background: #f9f9f9;
-    border: 1px solid #eee;
-    padding: 12px;
-    width: 100%;
-    border-radius: 12px;
-    margin-bottom: 8px;
-    cursor: pointer;
-    font-family: inherit;
-}
-
-/* Zone finale */
 .final-col {
-    height: 100%; width: 25%; float: left;
+    height: 100%;
+    cursor: pointer;
     border-right: 1px dashed rgba(255,255,255,0.4);
 }
 
-#final-quest {
-    background: white;
-    padding: 20px;
-    border-radius: 25px;
-    margin-top: 20px;
-    width: 100%;
-    max-width: 350px;
-    border: 2px solid var(--sage);
+/* --- BOUTON SCANNER ET INTERFACE --- */
+.scan-btn {
+    background: var(--sage);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(139, 171, 150, 0.3);
 }
-/* --- AJUSTEMENT DES RÉBUS ET DU CONTENU --- */
 
+#reader {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    display: none;
+}
+
+/* --- FENÊTRE QUESTION (MODALE) --- */
 .modal {
     display: none;
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(139, 171, 150, 0.4); 
-    backdrop-filter: blur(8px);
+    background: rgba(0,0,0,0.6);
     z-index: 1000;
-    /* Indispensable pour mobile : */
-    overflow-y: auto; 
-    padding: 20px 0; 
+    overflow-y: auto;
+    padding: 20px 0;
 }
 
-.modal.open { 
-    display: flex; 
-    align-items: flex-start; /* Aligne en haut pour permettre le scroll */
-}
+.modal.open { display: flex; align-items: center; justify-content: center; }
 
 .modal-content {
     background: white;
     width: 90%;
-    max-width: 380px;
-    margin: 20px auto; /* Centre horizontalement avec de l'espace en haut/bas */
+    max-width: 400px;
     padding: 25px;
-    border-radius: 30px;
+    border-radius: 25px;
     text-align: center;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-    border: 3px solid var(--soft-yellow);
     position: relative;
+    max-height: 90vh; /* Empêche de sortir de l'écran */
+    overflow-y: auto; /* Permet de scroller les textes longs */
 }
 
-/* On s'assure que le bouton est bien cliquable */
+#rebus-image { width: 100%; height: auto; border-radius: 15px; margin-bottom: 15px; }
+
+input[type="text"] {
+    width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 15px;
+    margin-bottom: 15px; font-family: inherit; font-size: 1rem; text-align: center;
+}
+
 .submit-btn {
-    position: relative;
-    z-index: 10;
-    background: var(--sage);
-    color: white;
-    border: none;
-    padding: 14px;
-    width: 100%;
-    border-radius: 15px;
-    font-weight: 600;
-    font-size: 1.1rem;
-    cursor: pointer;
-    margin-top: 10px;
+    background: var(--sage); color: white; border: none; padding: 14px;
+    width: 100%; border-radius: 15px; font-weight: 600; cursor: pointer;
 }
 
-#rebus-image {
-    width: 100%;       /* Prend toute la largeur disponible */
-    max-width: 100%;   /* Ne dépasse jamais du cadre */
-    height: auto;      /* Garde ses proportions sans s'écraser */
-    display: block;
-    margin: 0 auto 20px auto; 
-    border-radius: 15px;
-    object-fit: contain; /* Force l'image à tenir dans sa boîte */
-}
-
-/* On ajuste la taille du titre de la question */
-#question-text {
-    font-size: 1rem;
-    line-height: 1.4;
-    color: var(--text);
-    margin-bottom: 20px;
-    padding: 0 10px;
-}
-
-/* Style des boutons QCM pour qu'ils soient plus élégants */
 .option-btn {
-    background: #fdfbf7;
-    border: 2px solid var(--soft-blue);
-    padding: 12px;
-    width: 100%;
-    border-radius: 15px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    font-family: inherit;
-    font-weight: 600;
-    color: #5b8fb3;
-    transition: 0.2s;
+    background: #fdfbf7; border: 1px solid var(--blue); padding: 12px;
+    width: 100%; border-radius: 12px; margin-bottom: 8px; cursor: pointer;
 }
 
-.option-btn:active {
-    background: var(--soft-blue);
-    transform: scale(0.98);
-}
+#code-display { font-size: 2rem; font-weight: bold; color: var(--sage); margin: 15px 0; }
+.reset-link { margin-top: 30px; font-size: 0.7rem; color: #ccc; cursor: pointer; border: none; background: none; }
