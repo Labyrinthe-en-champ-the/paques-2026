@@ -15,58 +15,61 @@
             <div class="brand">Le Labyrinthe En-Champ-Thé</div>
             <h1>Chasse au <span>Trésor</span></h1>
             
-            <div class="progress-container">
+            <div class="progress-section">
                 <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
                 <div id="progress-label">Progression : 0%</div>
             </div>
         </header>
 
         <main>
-            <div id="scanner-section">
-                <button id="start-scan-btn" onclick="startScanner()" class="btn-main">📸 Scanner une borne</button>
-                <div id="camera-wrapper" style="display:none;">
+            <div id="scanner-ui">
+                <button id="start-scan-btn" onclick="startScanner()" class="btn-primary">📸 Scanner une borne</button>
+                <div id="camera-box" style="display:none;">
                     <div id="reader"></div>
-                    <button onclick="stopScanner()" class="btn-cancel">Annuler</button>
+                    <button onclick="stopScanner()" class="btn-cancel">Annuler le scan</button>
                 </div>
             </div>
 
             <div id="game-board" class="game-board"></div>
 
             <div id="final-hunt-ui" style="display:none;">
-                <div class="hunt-instructions">Trouvez les œufs ! Cliquez dessus pour les ramasser.</div>
-                <div id="code-display" class="code-display">
-                    <div class="digit-box"><span id="d-0">0</span><small>Col. I</small></div>
-                    <div class="digit-box"><span id="d-1">0</span><small>Col. II</small></div>
-                    <div class="digit-box"><span id="d-2">0</span><small>Col. III</small></div>
-                    <div class="digit-box"><span id="d-3">0</span><small>Col. IV</small></div>
+                <div class="instructions">Trouvez les œufs cachés dans l'image !</div>
+                <div id="code-display" class="code-row">
+                    <div class="code-box"><span id="d-0">0</span><small>Col. I</small></div>
+                    <div class="code-box"><span id="d-1">0</span><small>Col. II</small></div>
+                    <div class="code-box"><span id="d-2">0</span><small>Col. III</small></div>
+                    <div class="code-box"><span id="d-3">0</span><small>Col. IV</small></div>
                 </div>
+                <p class="final-hint">Le code final est <strong>2 · 1 · 1 · 9</strong></p>
             </div>
         </main>
 
-        <button onclick="resetGame()" class="btn-reset">Réinitialiser la partie</button>
+        <footer>
+            <button onclick="resetGame()" class="btn-reset">Réinitialiser la partie</button>
+        </footer>
     </div>
 
     <div id="modal" class="modal-overlay">
         <div class="modal-card">
-            <div class="modal-header">
-                <span id="q-diff"></span>
-                <button class="close-modal" onclick="closeModal()">×</button>
-            </div>
-            <div class="modal-body">
+            <button class="close-modal" onclick="closeModal()">×</button>
+            <div class="modal-content">
+                <div id="q-diff" class="badge"></div>
                 <p id="q-text"></p>
                 <img id="q-rebus" src="" alt="Rébus" style="display:none;">
-                <div id="input-area">
-                    <input type="text" id="q-input" placeholder="Votre réponse...">
+                
+                <div id="input-area" class="input-stack">
+                    <input type="text" id="q-input" placeholder="Écrivez ici...">
                     <button onclick="submitAnswer()" class="btn-validate">Valider</button>
                 </div>
-                <div id="qcm-area" class="qcm-grid"></div>
+
+                <div id="qcm-area" class="qcm-stack"></div>
             </div>
             <div id="feedback" class="feedback"></div>
         </div>
     </div>
 
-    <div id="success-overlay" class="success-overlay">
-        <div class="success-content">BRAVO ! ✨</div>
+    <div id="success-flash" class="success-flash">
+        <div class="flash-text">GAGNÉ ! ✨</div>
     </div>
 
     <script src="script.js"></script>
