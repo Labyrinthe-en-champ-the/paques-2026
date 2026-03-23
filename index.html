@@ -3,64 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Chasse au Trésor - Labyrinthe En-Champ-Thé</title>
+    <title>Chasse au Trésor — En-Champ-Thé</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </head>
 <body>
 
-    <div class="container">
+    <div class="app-container">
         <header>
-            <h1>🌿 Chasse au Trésor 🌿</h1>
-            <p class="subtitle">Édition de Pâques</p>
+            <div class="brand">Le Labyrinthe En-Champ-Thé</div>
+            <h1>Chasse au <span>Trésor</span></h1>
+            
+            <div class="progress-container">
+                <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+                <div id="progress-label">Progression : 0%</div>
+            </div>
         </header>
 
-        <section class="main-ui">
-            <button id="scan-btn" onclick="startScanner()" class="primary-btn scan-btn">
-                📸 Scanner une borne
-            </button>
-            
-            <div id="reader-container">
-                <div id="reader"></div>
-                <button id="stop-scan" onclick="stopScanner()" class="secondary-btn" style="display:none;">Annuler le scan</button>
+        <main>
+            <div id="scanner-section">
+                <button id="start-scan-btn" onclick="startScanner()" class="btn-main">📸 Scanner une borne</button>
+                <div id="camera-wrapper" style="display:none;">
+                    <div id="reader"></div>
+                    <button onclick="stopScanner()" class="btn-cancel">Annuler le scan</button>
+                </div>
             </div>
 
             <div id="game-board" class="game-board"></div>
 
-            <div id="final-quest" class="final-card" style="display:none;">
-                <h3>🔍 L'Énigme Finale</h3>
-                <p>Trouvez le code en comptant les œufs par colonne sur l'image ci-dessus.</p>
-                <div id="code-display">0 0 0 0</div>
-                <button onclick="checkFinalCode()" class="primary-btn">Valider le code</button>
+            <div id="final-hunt-ui" style="display:none;">
+                <div class="hunt-instructions">Trouvez les œufs ! Cliquez dessus pour les ramasser.</div>
+                <div id="code-display" class="code-display">
+                    <div class="digit-box"><span id="d-0">0</span><small>Col. I</small></div>
+                    <div class="digit-box"><span id="d-1">0</span><small>Col. II</small></div>
+                    <div class="digit-box"><span id="d-2">0</span><small>Col. III</small></div>
+                    <div class="digit-box"><span id="d-3">0</span><small>Col. IV</small></div>
+                </div>
             </div>
-        </section>
+        </main>
 
-        <footer>
-            <button onclick="resetGame()" class="reset-btn">Réinitialiser la partie</button>
-        </footer>
+        <button onclick="resetGame()" class="btn-reset">Réinitialiser la partie</button>
     </div>
 
     <div id="modal" class="modal-overlay">
         <div class="modal-card">
-            <button class="close-btn" onclick="closeModal()">×</button>
-            <div id="question-header">
-                <span id="question-difficulty"></span>
-                <span id="life-counter"></span>
+            <div class="modal-header">
+                <span id="q-diff"></span>
+                <button class="close-modal" onclick="closeModal()">×</button>
             </div>
-            
-            <div class="question-body">
-                <p id="question-text"></p>
-                <img id="rebus-image" src="" alt="Rébus">
-                
-                <div id="input-zone">
-                    <input type="text" id="answer-input" placeholder="Votre réponse...">
-                    <button onclick="submitAnswer()" class="primary-btn">Valider</button>
+            <div class="modal-body">
+                <p id="q-text"></p>
+                <img id="q-rebus" src="" alt="Rébus" style="display:none;">
+                <div id="input-area">
+                    <input type="text" id="q-input" placeholder="Tapez votre réponse...">
+                    <button onclick="submitAnswer()" class="btn-validate">Valider</button>
                 </div>
-
-                <div id="options-container" class="options-grid"></div>
+                <div id="qcm-area" class="qcm-grid"></div>
             </div>
-            <p id="feedback" class="feedback-msg"></p>
+            <div id="feedback" class="feedback"></div>
         </div>
+    </div>
+
+    <div id="success-overlay" class="success-overlay">
+        <div class="success-content">BRAVO ! ✨</div>
     </div>
 
     <script src="script.js"></script>
