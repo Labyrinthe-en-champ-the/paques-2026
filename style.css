@@ -1,68 +1,70 @@
-/* --- STYLE PÂQUES AU LABYRINTHE EN-CHAMP-THÉ --- */
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
 
 :root {
-    --sage: #8bab96;
-    --cream: #fdfbf7;
-    --blue: #d4eaf7;
-    --text: #4a4a4a;
+    --sage: #A8D5BA;
+    --soft-yellow: #FEF9C3;
+    --soft-blue: #D1EAFF;
+    --pastel-pink: #FFD1DC;
+    --text: #5D5D5D;
+    --cream: #FDFBF7;
 }
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 body {
     font-family: 'Quicksand', sans-serif;
-    background-color: var(--cream);
-    background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+    background: var(--cream);
     color: var(--text);
-    margin: 0;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin: 0; padding: 0;
+    display: flex; justify-content: center;
 }
 
-h1 { color: var(--sage); font-size: 1.5rem; margin-bottom: 5px; text-transform: uppercase; }
-.subtitle { font-size: 0.8rem; color: #999; margin-bottom: 15px; }
+.container {
+    width: 100%; max-width: 450px;
+    padding: 20px; text-align: center;
+}
 
-/* --- GRILLE DE JEU (PORTRAIT 3x4) --- */
-.game-board {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    gap: 8px;
+h1 { color: #7BA68A; margin: 0; font-size: 1.6rem; }
+.subtitle { color: #AAA; margin-top: 5px; font-size: 0.9rem; letter-spacing: 1px; }
+
+/* BOUTONS */
+.primary-btn {
+    background: var(--sage); color: white; border: none;
+    padding: 15px 25px; border-radius: 20px;
+    font-size: 1.1rem; font-weight: 700; cursor: pointer;
+    box-shadow: 0 4px 0 #89B398; transition: 0.2s;
     width: 100%;
-    max-width: 350px;
-    aspect-ratio: 3/4;
-    background: white;
-    padding: 10px;
-    border-radius: 20px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-    margin-bottom: 20px;
-    transition: all 0.5s ease;
+}
+.primary-btn:active { transform: translateY(3px); box-shadow: none; }
+
+.secondary-btn {
+    background: #DDD; border: none; padding: 10px; 
+    border-radius: 15px; margin-top: 10px; cursor: pointer;
+}
+
+/* GRILLE 3x4 */
+.game-board {
+    display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(4, 1fr);
+    gap: 10px; width: 100%; aspect-ratio: 3/4;
+    margin: 25px 0; background: white; padding: 12px;
+    border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
 .station {
-    border-radius: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
+    border-radius: 15px; display: flex; justify-content: center; align-items: center;
+    font-weight: 700; font-size: 1.2rem; transition: 0.3s;
 }
 
-/* ÉTATS DES CASES */
-.station.locked { background: #eee; color: #ccc; }
-.station.active { background: var(--blue); color: #5b8fb3; border: 2px dashed #5b8fb3; }
-.station.failed { background: #e0e0e0; color: #999; }
+.station.locked { background: #F0F0F0; color: #CCC; }
+.station.active { background: var(--soft-blue); color: #5B8FB3; border: 2px dashed #5B8FB3; }
+.station.failed { background: #E5E5E5; color: #999; }
 
-/* RÉVÉLATION DE L'IMAGE (3 colonnes x 4 lignes) */
+/* RÉVÉLATION IMAGE (Correction des portions) */
 .station.unlocked {
     background-image: url('image_2.png');
-    background-size: 300% 400%; /* L'image fait 3 fois la largeur et 4 fois la hauteur d'une case */
+    background-size: 300% 400%; /* 3 colonnes, 4 lignes */
     color: transparent;
 }
-
-/* POSITIONS PRÉCISES DES PORTIONS D'IMAGE */
 .station-1 { background-position: 0% 0%; }
 .station-2 { background-position: 50% 0%; }
 .station-3 { background-position: 100% 0%; }
@@ -76,85 +78,54 @@ h1 { color: var(--sage); font-size: 1.5rem; margin-bottom: 5px; text-transform: 
 .station-11 { background-position: 50% 100%; }
 .station-12 { background-position: 100% 100%; }
 
-/* --- MODE FINAL (IMAGE HORIZONTALE) --- */
-.horizontal-final {
+/* MODE FINAL HORIZONTAL */
+.game-board.final-mode {
     grid-template-columns: repeat(4, 1fr) !important;
     grid-template-rows: 1fr !important;
     aspect-ratio: 16/9 !important;
-    max-width: 500px !important;
-    background-size: cover !important;
-    background-position: center !important;
+    background-size: contain !important;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
-.final-col {
-    height: 100%;
-    cursor: pointer;
-    border-right: 1px dashed rgba(255,255,255,0.4);
+.final-col { height: 100%; cursor: pointer; border-right: 1px dashed rgba(255,255,255,0.2); }
+
+/* MODALE */
+.modal-overlay {
+    display: none; position: fixed; top: 0; left: 0; 
+    width: 100%; height: 100%; background: rgba(0,0,0,0.5);
+    z-index: 2000; backdrop-filter: blur(5px);
+    justify-content: center; align-items: center;
+}
+.modal-overlay.open { display: flex; }
+
+.modal-card {
+    background: white; width: 90%; max-width: 400px;
+    padding: 30px; border-radius: 30px; position: relative;
+    max-height: 85vh; overflow-y: auto;
 }
 
-/* --- BOUTON SCANNER ET INTERFACE --- */
-.scan-btn {
-    background: var(--sage);
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 50px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(139, 171, 150, 0.3);
+.close-btn {
+    position: absolute; top: 15px; right: 20px; font-size: 2rem;
+    border: none; background: none; color: #CCC; cursor: pointer;
 }
 
-#reader {
-    width: 100%;
-    max-width: 300px;
-    border-radius: 20px;
-    overflow: hidden;
-    margin-bottom: 20px;
-    display: none;
-}
+#rebus-image { width: 100%; border-radius: 15px; margin: 15px 0; display: none; }
 
-/* --- FENÊTRE QUESTION (MODALE) --- */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.6);
-    z-index: 1000;
-    overflow-y: auto;
-    padding: 20px 0;
-}
-
-.modal.open { display: flex; align-items: center; justify-content: center; }
-
-.modal-content {
-    background: white;
-    width: 90%;
-    max-width: 400px;
-    padding: 25px;
-    border-radius: 25px;
-    text-align: center;
-    position: relative;
-    max-height: 90vh; /* Empêche de sortir de l'écran */
-    overflow-y: auto; /* Permet de scroller les textes longs */
-}
-
-#rebus-image { width: 100%; height: auto; border-radius: 15px; margin-bottom: 15px; }
+#question-difficulty { background: var(--soft-blue); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; color: #5B8FB3; }
 
 input[type="text"] {
-    width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 15px;
-    margin-bottom: 15px; font-family: inherit; font-size: 1rem; text-align: center;
+    width: 100%; padding: 15px; border: 2px solid #EEE; 
+    border-radius: 15px; margin-bottom: 10px; font-family: inherit; font-size: 1rem;
 }
 
-.submit-btn {
-    background: var(--sage); color: white; border: none; padding: 14px;
-    width: 100%; border-radius: 15px; font-weight: 600; cursor: pointer;
-}
-
+.options-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 15px; }
 .option-btn {
-    background: #fdfbf7; border: 1px solid var(--blue); padding: 12px;
-    width: 100%; border-radius: 12px; margin-bottom: 8px; cursor: pointer;
+    background: white; border: 2px solid var(--soft-blue); padding: 12px;
+    border-radius: 15px; font-family: inherit; font-weight: 600; cursor: pointer;
 }
 
-#code-display { font-size: 2rem; font-weight: bold; color: var(--sage); margin: 15px 0; }
-.reset-link { margin-top: 30px; font-size: 0.7rem; color: #ccc; cursor: pointer; border: none; background: none; }
+#code-display { font-size: 2.5rem; font-weight: 800; color: var(--sage); letter-spacing: 10px; margin: 20px 0; }
+.reset-btn { background: none; border: none; color: #CCC; margin-top: 40px; cursor: pointer; }
+
+#reader { width: 100%; border-radius: 20px; overflow: hidden; margin-top: 10px; }
