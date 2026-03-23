@@ -169,3 +169,30 @@ function updateFinalUI() {
 
 function save() { localStorage.setItem('game_2026', JSON.stringify(gameState)); }
 function resetGame() { if(confirm("Voulez-vous tout recommencer ?")) { localStorage.clear(); location.reload(); } }
+// MODIFICATION DE LA FONCTION DE MISE À JOUR FINALE
+function updateFinalUI() {
+    const counts = [0, 0, 0, 0];
+    gameState.eggs.forEach(idx => counts[eggPositions[idx].col]++);
+    counts.forEach((c, i) => document.getElementById('d-' + i).innerText = c);
+    
+    // Si le code est 2119
+    if (counts.join('') === "2119") {
+        vibrate([100, 50, 100, 50, 300]); // Vibration spéciale victoire
+        confetti({ 
+            spread: 180, 
+            particleCount: 500, 
+            origin: { y: 0.6 },
+            colors: ['#8bab96', '#c9a84c', '#ffffff'] 
+        });
+        
+        // On affiche le bel écran au lieu de l'alerte moche
+        setTimeout(() => {
+            document.getElementById('victory-screen').style.display = 'flex';
+        }, 800);
+    }
+}
+
+// Petite fonction pour pouvoir fermer l'écran si besoin
+function closeVictory() {
+    document.getElementById('victory-screen').style.display = 'none';
+}
