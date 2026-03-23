@@ -179,3 +179,56 @@ input[type="text"] {
     max-width: 350px;
     border: 2px solid var(--sage);
 }
+/* --- AJUSTEMENT DES RÉBUS ET DU CONTENU --- */
+
+.modal-content {
+    background: white;
+    width: 92%; /* Un peu plus large sur mobile */
+    max-width: 400px;
+    padding: 20px; /* Moins de padding pour laisser de la place à l'image */
+    border-radius: 30px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    border: 3px solid var(--soft-yellow);
+    position: relative;
+    overflow: hidden; /* Empêche tout débordement */
+}
+
+#rebus-image {
+    width: 100%;       /* Prend toute la largeur disponible */
+    max-width: 100%;   /* Ne dépasse jamais du cadre */
+    height: auto;      /* Garde ses proportions sans s'écraser */
+    display: block;
+    margin: 0 auto 20px auto; 
+    border-radius: 15px;
+    object-fit: contain; /* Force l'image à tenir dans sa boîte */
+}
+
+/* On ajuste la taille du titre de la question */
+#question-text {
+    font-size: 1rem;
+    line-height: 1.4;
+    color: var(--text);
+    margin-bottom: 20px;
+    padding: 0 10px;
+}
+
+/* Style des boutons QCM pour qu'ils soient plus élégants */
+.option-btn {
+    background: #fdfbf7;
+    border: 2px solid var(--soft-blue);
+    padding: 12px;
+    width: 100%;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    color: #5b8fb3;
+    transition: 0.2s;
+}
+
+.option-btn:active {
+    background: var(--soft-blue);
+    transform: scale(0.98);
+}
