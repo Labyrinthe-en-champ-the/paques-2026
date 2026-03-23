@@ -210,3 +210,22 @@ function resetGame() {
         window.location.href = window.location.pathname; // Recharge sans les paramètres d'URL
     }
 }
+// Permet de valider en appuyant sur "Entrée" sur le clavier du téléphone
+document.getElementById('answer-input').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        submitAnswer();
+    }
+});
+
+// Version améliorée de la fonction submit
+function submitAnswer() {
+    const inputField = document.getElementById('answer-input');
+    if (!inputField) return;
+    
+    const userVal = inputField.value;
+    if (userVal.trim() === "") {
+        alert("Oups, vous n'avez rien écrit !");
+        return;
+    }
+    validate(userVal);
+}
