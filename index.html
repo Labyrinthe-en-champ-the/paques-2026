@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu de Pâques - Labyrinthe En-Champ-Thé</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>🌿 Chasse de Pâques 🌿</h1>
+        <p style="text-align:center; margin-bottom:10px;">Scannez les pancartes pour révéler l'image !</p>
+        
+        <div id="game-board" class="game-board">
+            </div>
+
+        <div id="final-quest" style="display:none; text-align:center; margin-top:20px;">
+            <h3>🔍 Énigme Finale</h3>
+            <p>Cliquez sur les zones de l'image pour trouver les œufs cachés et déduire le code !</p>
+            <div id="code-display" style="font-size: 2rem; letter-spacing: 10px; margin: 10px; font-weight: bold;">_ _ _ _</div>
+            <button onclick="checkFinalCode()" class="submit-btn">Valider le code final</button>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div id="question-header">
+                <div id="question-difficulty"></div>
+                <div id="life-counter" class="life-counter"></div>
+            </div>
+            
+            <p id="question-text"></p>
+            
+            <img id="rebus-image" src="" alt="Rébus">
+
+            <div id="input-zone">
+                <input type="text" id="answer-input" placeholder="Votre réponse ici...">
+                <button onclick="submitAnswer()" class="submit-btn">Valider</button>
+            </div>
+
+            <div id="options-container" class="options-container"></div>
+
+            <p id="feedback"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

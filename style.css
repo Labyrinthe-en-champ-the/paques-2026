@@ -1,0 +1,191 @@
+/* AD'N DE PÂQUES - LABYRINTHE EN-CHAMP-THÉ 
+   Palette : Vert Sauge, Jaune Paille, Rose Poudré, Bleu Ciel
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap');
+
+:root {
+    --bg-color: #fdfbf7;           /* Crème très clair */
+    --primary-sage: #a8d5ba;       /* Vert thé pastel */
+    --accent-yellow: #fef9c3;      /* Jaune poussin très doux */
+    --soft-pink: #fce4ec;          /* Rose fleur de thé */
+    --sky-blue: #e3f2fd;           /* Bleu ciel */
+    --text-dark: #5d5d5d;          /* Gris anthracite doux */
+    --border-radius: 20px;         /* Style arrondi type œuf */
+}
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-dark);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+h1 {
+    font-weight: 600;
+    color: #8bab96;
+    margin-bottom: 5px;
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+}
+
+.subtitle {
+    font-size: 0.9rem;
+    color: #999;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* --- GRILLE DU PUZZLE --- */
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 8px;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    background: #fff;
+    padding: 10px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.station {
+    background-color: var(--sky-blue);
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #8faec5;
+    transition: all 0.4s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.station.locked {
+    background-color: var(--sky-blue);
+}
+
+.station.unlocked {
+    background-color: transparent;
+    border: none;
+    background-image: url('image_2.png'); /* Ton affiche */
+    background-size: 300% 400%;
+}
+
+/* Positions de l'image (identiques au précédent) */
+.station-1 { background-position: 0% 0%; }
+.station-2 { background-position: 50% 0%; }
+.station-3 { background-position: 100% 0%; }
+.station-4 { background-position: 0% 33.3%; }
+.station-5 { background-position: 50% 33.3%; }
+.station-6 { background-position: 100% 33.3%; }
+.station-7 { background-position: 0% 66.6%; }
+.station-8 { background-position: 50% 66.6%; }
+.station-9 { background-position: 100% 66.6%; }
+.station-10 { background-position: 0% 100%; }
+.station-11 { background-position: 50% 100%; }
+.station-12 { background-position: 100% 100%; }
+
+/* --- FENÊTRE MODALE (QUESTIONS) --- */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255, 255, 255, 0.9); /* Fond blanc transparent */
+    backdrop-filter: blur(5px);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.open { display: flex; }
+
+.modal-content {
+    background: white;
+    width: 85%;
+    max-width: 400px;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    border: 1px solid var(--soft-pink);
+}
+
+#question-text {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    line-height: 1.4;
+    color: var(--text-dark);
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--sky-blue);
+    border-radius: 15px;
+    outline: none;
+    font-family: inherit;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.submit-btn {
+    background-color: var(--primary-sage);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #8bab96;
+}
+
+.life-counter {
+    font-size: 0.8rem;
+    color: #bcaaa4;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+/* Boutons QCM */
+.option-btn {
+    background: var(--accent-yellow);
+    border: none;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 12px;
+    width: 100%;
+    cursor: pointer;
+    font-family: inherit;
+    color: #8d8a67;
+}
+
+#rebus-image {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+#final-quest {
+    background: var(--soft-pink);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    margin-top: 20px;
+}
