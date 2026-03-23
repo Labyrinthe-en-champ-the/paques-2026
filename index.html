@@ -2,48 +2,64 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeu de Pâques - Labyrinthe En-Champ-Thé</title>
-    <script src="https://unpkg.com/html5-qrcode"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Chasse au Trésor - Labyrinthe En-Champ-Thé</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 <body>
 
     <div class="container">
-        <h1>🌿 Chasse de Pâques 🌿</h1>
-        <p style="text-align:center; margin-bottom:10px;">Scannez les pancartes pour révéler l'image !</p>
-        
-        <div id="game-board" class="game-board">
+        <header>
+            <h1>🌿 Chasse au Trésor 🌿</h1>
+            <p class="subtitle">Édition de Pâques</p>
+        </header>
+
+        <section class="main-ui">
+            <button id="scan-btn" onclick="startScanner()" class="primary-btn scan-btn">
+                📸 Scanner une borne
+            </button>
+            
+            <div id="reader-container">
+                <div id="reader"></div>
+                <button id="stop-scan" onclick="stopScanner()" class="secondary-btn" style="display:none;">Annuler le scan</button>
             </div>
 
-        <div id="final-quest" style="display:none; text-align:center; margin-top:20px;">
-            <h3>🔍 Énigme Finale</h3>
-            <p>Cliquez sur les zones de l'image pour trouver les œufs cachés et déduire le code !</p>
-            <div id="code-display" style="font-size: 2rem; letter-spacing: 10px; margin: 10px; font-weight: bold;">_ _ _ _</div>
-            <button onclick="checkFinalCode()" class="submit-btn">Valider le code final</button>
-        </div>
+            <div id="game-board" class="game-board"></div>
+
+            <div id="final-quest" class="final-card" style="display:none;">
+                <h3>🔍 L'Énigme Finale</h3>
+                <p>Trouvez le code en comptant les œufs par colonne sur l'image ci-dessus.</p>
+                <div id="code-display">0 0 0 0</div>
+                <button onclick="checkFinalCode()" class="primary-btn">Valider le code</button>
+            </div>
+        </section>
+
+        <footer>
+            <button onclick="resetGame()" class="reset-btn">Réinitialiser la partie</button>
+        </footer>
     </div>
 
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal()">&times;</span>
+    <div id="modal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="close-btn" onclick="closeModal()">×</button>
             <div id="question-header">
-                <div id="question-difficulty"></div>
-                <div id="life-counter" class="life-counter"></div>
+                <span id="question-difficulty"></span>
+                <span id="life-counter"></span>
             </div>
             
-            <p id="question-text"></p>
-            
-            <img id="rebus-image" src="" alt="Rébus">
+            <div class="question-body">
+                <p id="question-text"></p>
+                <img id="rebus-image" src="" alt="Rébus">
+                
+                <div id="input-zone">
+                    <input type="text" id="answer-input" placeholder="Votre réponse...">
+                    <button onclick="submitAnswer()" class="primary-btn">Valider</button>
+                </div>
 
-            <div id="input-zone">
-                <input type="text" id="answer-input" placeholder="Votre réponse ici...">
-                <button onclick="submitAnswer()" class="submit-btn">Valider</button>
+                <div id="options-container" class="options-grid"></div>
             </div>
-
-            <div id="options-container" class="options-container"></div>
-
-            <p id="feedback"></p>
+            <p id="feedback" class="feedback-msg"></p>
         </div>
     </div>
 
