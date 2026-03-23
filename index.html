@@ -14,7 +14,6 @@
         <header>
             <div class="brand">Le Labyrinthe En-Champ-Thé</div>
             <h1>Chasse au <span>Trésor</span></h1>
-            
             <div class="progress-section">
                 <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
                 <div id="progress-label">Progression : 0%</div>
@@ -40,7 +39,6 @@
                     <div class="code-box"><span id="d-2">0</span><small>Col. III</small></div>
                     <div class="code-box"><span id="d-3">0</span><small>Col. IV</small></div>
                 </div>
-                <p class="final-hint">Le code final est <strong>2 · 1 · 1 · 9</strong></p>
             </div>
         </main>
 
@@ -52,46 +50,42 @@
     <div id="modal" class="modal-overlay">
         <div class="modal-card">
             <button class="close-modal" onclick="closeModal()">×</button>
-            <div class="modal-content">
-                <div id="q-diff" class="badge"></div>
-                <p id="q-text"></p>
-                <img id="q-rebus" src="" alt="Rébus" style="display:none;">
-                
-                <div id="input-area" class="input-stack">
-                    <input type="text" id="q-input" placeholder="Écrivez ici...">
-                    <button onclick="submitAnswer()" class="btn-validate">Valider</button>
-                </div>
-
-                <div id="qcm-area" class="qcm-stack"></div>
+            <div id="q-diff" class="badge"></div>
+            <p id="q-text"></p>
+            <img id="q-rebus" src="" alt="Rébus" style="display:none;">
+            
+            <div id="input-area" class="input-stack">
+                <input type="text" id="q-input" placeholder="Votre réponse...">
+                <button onclick="submitAnswer()" class="btn-validate">Valider</button>
             </div>
+            <div id="qcm-area" class="qcm-stack"></div>
             <div id="feedback" class="feedback"></div>
         </div>
     </div>
 
-    <div id="victory-screen" class="victory-overlay">
-    <div class="victory-card">
-        <div class="victory-icon">🐣</div>
-        <h2>Félicitations !</h2>
-        <p class="victory-sub">Vous avez débusqué tous les œufs du Labyrinthe.</p>
-        
-        <div class="final-code-reveal">2119</div>
-
-        <div class="mission-container">
-            <p class="mission-title">LE SECRET EST RÉVÉLÉ ! 🌿</p>
-            <p class="mission-intro">Bravo ! Votre persévérance a porté ses fruits.</p>
-            
-            <ul class="mission-list">
-                <li><span>📍</span> 1. Courez vers le <strong>Coffre au Trésor</strong>.</li>
-                <li><span>🗝️</span> 2. Utilisez le code <strong>2119</strong> pour le cadenas.</li>
-                <li><span>🎟️</span> 3. Glissez votre ticket pour le <strong>Tirage au Sort</strong> !</li>
-            </ul>
-            
-            <p class="mission-footer">Que la chance soit avec vous !</p>
-        </div>
-
-        <button onclick="closeVictory()" class="btn-close-victory">Retour au jeu</button>
+    <div id="success-flash" class="success-flash">
+        <div class="flash-text">BRAVO ! ✨</div>
     </div>
-</div>
+
+    <div id="victory-screen" class="victory-overlay">
+        <div class="victory-card">
+            <div class="victory-icon">🐣</div>
+            <h2>Félicitations !</h2>
+            <p class="victory-sub">Vous avez débusqué tous les œufs.</p>
+            <div class="final-code-reveal">2119</div>
+            <div class="mission-container">
+                <p class="mission-title">LE SECRET EST RÉVÉLÉ ! 🌿</p>
+                <ul class="mission-list">
+                    <li><span>📍</span> 1. Courez vers le <strong>Coffre au Trésor</strong>.</li>
+                    <li><span>🗝️</span> 2. Utilisez le code <strong>2119</strong> pour le cadenas.</li>
+                    <li><span>🎟️</span> 3. Glissez votre ticket pour le <strong>Tirage au Sort</strong> !</li>
+                </ul>
+                <p class="mission-footer">Que la chance soit avec vous !</p>
+            </div>
+            <button onclick="closeVictory()" class="btn-close-victory">Retour au jeu</button>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
