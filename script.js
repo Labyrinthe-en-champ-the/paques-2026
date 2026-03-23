@@ -17,7 +17,8 @@ const questions = {
 let gameState = JSON.parse(localStorage.getItem('easterGameProgress')) || {
     unlocked: [],
     failed: [],
-    currentLives: {}
+    currentLives: {},
+    finalCode: [0, 0, 0, 0] // État des 4 colonnes
 };
 
 let currentStation = null;
@@ -31,6 +32,8 @@ window.onload = () => {
 function renderBoard() {
     const board = document.getElementById('game-board');
     board.innerHTML = '';
+    
+    // On crée les 12 cases
     for (let i = 1; i <= 12; i++) {
         const div = document.createElement('div');
         div.className = `station station-${i} ${gameState.unlocked.includes(i) ? 'unlocked' : 'locked'}`;
@@ -38,40 +41,74 @@ function renderBoard() {
         div.onclick = () => openStation(i);
         board.appendChild(div);
     }
+
+    // Si tout est fini, on active la phase finale interactive sur l'image
     if (gameState.unlocked.length + gameState.failed.length >= 12) {
-        document.getElementById('final-quest').style.display = 'block';
+        enableFinalHunt();
     }
 }
 
+function enableFinalHunt() {
+    document.getElementById('final-quest').style.display = 'block';
+    const board = document.getElementById('game-board');
+    board.style.position = 'relative';
+    board.innerHTML = ''; // On vide pour mettre les 4 zones cliquables
+    
+    // On recrée l'image complète en fond
+    board.style.backgroundImage = "url('image_2.png')";
+    board.style.backgroundSize = "cover";
+
+    // On crée 4 colonnes invisibles
+    for (let i = 0; i < 4; i++) {
+        const col = document.createElement('div');
+        col.style.height = "100%";
+        col.style.width = "25%";
+        col.style.float = "left";
+        col.style.borderRight = "1px dashed rgba(255,255,255,0.3)";
+        col.onclick = () => {
+            gameState.finalCode[i] = (gameState.finalCode[i] + 1) % 10;
+            updateCodeDisplay();
+        };
+        board.appendChild(col);
+    }
+    updateCodeDisplay();
+}
+
+function updateCodeDisplay() {
+    document.getElementById('code-display').innerText = gameState.finalCode.join(' ');
+}
+
+function checkFinalCode() {
+    if (gameState.finalCode.join('') === "2019") {
+        alert("🎉 BRAVO ! Vous avez trouvé le trésor (2019). Montrez cet écran à l'accueil !");
+    } else {
+        alert("Le code n'est pas bon. Comptez bien les œufs cachés dans chaque colonne de l'image...");
+    }
+}
+
+// --- LOGIQUE COMMUNE (Scan / Questions) ---
 function checkUrlParam() {
     const params = new URLSearchParams(window.location.search);
     const id = parseInt(params.get('id'));
     if (id && id <= 12) openStation(id);
 }
 
-// --- LOGIQUE DES QUESTIONS ---
 function openStation(id) {
-    if (gameState.unlocked.includes(id) || gameState.failed.includes(id)) {
-        alert("Cette case est déjà terminée !");
-        return;
-    }
+    if (gameState.unlocked.includes(id) || gameState.failed.includes(id)) return;
     currentStation = id;
     const qData = questions[id];
     
     document.getElementById('question-difficulty').innerText = `Difficulté : ${qData.diff}`;
     document.getElementById('question-text').innerText = qData.q;
     
-    // Gestion des vies
     if (!(id in gameState.currentLives)) gameState.currentLives[id] = qData.lives;
     const v = gameState.currentLives[id];
-    document.getElementById('life-counter').innerText = v === Infinity ? "Vies : ∞" : `Vies : ${v}`;
+    document.getElementById('life-counter').innerText = v === Infinity ? "" : `Vies restantes : ${v}`;
 
-    // Affichage Rébus
     const imgEl = document.getElementById('rebus-image');
     if (qData.img) { imgEl.src = qData.img; imgEl.style.display = 'block'; }
     else { imgEl.style.display = 'none'; }
 
-    // Mode QCM ou Libre
     if (qData.type === 'qcm') {
         document.getElementById('input-zone').style.display = 'none';
         const container = document.getElementById('options-container');
@@ -88,13 +125,11 @@ function openStation(id) {
         document.getElementById('input-zone').style.display = 'block';
         document.getElementById('options-container').style.display = 'none';
     }
-
     document.getElementById('modal').classList.add('open');
 }
 
 function submitAnswer() {
-    const input = document.getElementById('answer-input').value;
-    validate(input);
+    validate(document.getElementById('answer-input').value);
 }
 
 function validate(userAns) {
@@ -115,10 +150,9 @@ function validate(userAns) {
         gameState.currentLives[currentStation]--;
         if (gameState.currentLives[currentStation] <= 0) {
             gameState.failed.push(currentStation);
-            saveAndRefresh("Dommage... Plus de vies. La case reste grise.");
+            saveAndRefresh("Zut ! Cette case restera mystérieuse...");
         } else {
-            document.getElementById('feedback').innerText = "Mauvaise réponse ! Réessayez.";
-            document.getElementById('life-counter').innerText = `Vies : ${gameState.currentLives[currentStation]}`;
+            document.getElementById('feedback').innerText = "Ce n'est pas ça... Réessaie !";
         }
     }
 }
@@ -134,14 +168,4 @@ function closeModal() {
     document.getElementById('modal').classList.remove('open');
     document.getElementById('answer-input').value = '';
     document.getElementById('feedback').innerText = '';
-}
-
-// --- ÉNIGME FINALE (CODE 2019) ---
-function checkFinalCode() {
-    const code = prompt("Entrez le code à 4 chiffres trouvé grâce aux œufs :");
-    if (code === "2019") {
-        alert("FÉLICITATIONS ! Vous avez trouvé le trésor de Pâques. Présentez cet écran à l'accueil.");
-    } else {
-        alert("Code erroné. Regardez bien les colonnes de l'image...");
-    }
 }
